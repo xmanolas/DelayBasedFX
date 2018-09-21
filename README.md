@@ -12,3 +12,5 @@ The main idea behind this plugin is to keep on building on the existing simple d
 
 https://juce.com
 
+In its current state, the plugin tries to read the data of the circular buffer inverted for a given amount of time. Inevitably, this will lead to clicks and artifacts so I am in the process of trying to work out how to deal with this.
+
