@@ -28,9 +28,6 @@ public:
     void resized() override;
     void sliderValueChanged (Slider *slider) override;
     
-    
- 
-  
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -47,7 +44,7 @@ private:
     void timerCallback () override
     {
         //dryWetLabel.setText(std::to_string(processor.dcBpm), dontSendNotification);
-        repaint();
+        //repaint();
     }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CmDelayLinesAudioProcessorEditor)

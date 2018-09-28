@@ -170,8 +170,8 @@ void CmDelayLinesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         const float* dcBufferData = dcBuffer.getReadPointer(channel);
        
         dcFillBuffer(channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
-        dcGetInverseBuffer(buffer, channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
-        //dcGetBuffer(buffer, channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
+        //dcGetInverseBuffer(buffer, channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
+        dcGetBuffer(buffer, channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
             
       
     }
@@ -188,13 +188,13 @@ void CmDelayLinesAudioProcessor::dcFillBuffer (int channel, const int bufferLeng
     // Copy data from main buffer to delay buffer
     if (delayBufferLength > bufferLength + bufferWritePos)
     {
-        dcBuffer.copyFromWithRamp(channel, bufferWritePos, bufferData, bufferLength, 1.0, 1.0);
+        dcBuffer.copyFromWithRamp(channel, bufferWritePos, bufferData, bufferLength, dryWetAmount, dryWetAmount);
     }
     else
     {
         const int bufferRemaining = delayBufferLength - bufferWritePos;
-        dcBuffer.copyFromWithRamp(channel, bufferWritePos, bufferData, bufferRemaining, 1.0, 1.0);
-        dcBuffer.copyFromWithRamp(channel, 0, bufferData, bufferLength - bufferRemaining, 1.0, 1.0);
+        dcBuffer.copyFromWithRamp(channel, bufferWritePos, bufferData, bufferRemaining, dryWetAmount, dryWetAmount);
+        dcBuffer.copyFromWithRamp(channel, 0, bufferData, bufferLength - bufferRemaining, dryWetAmount, dryWetAmount);
     }
     
 }

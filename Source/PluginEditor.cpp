@@ -20,17 +20,24 @@ CmDelayLinesAudioProcessorEditor::CmDelayLinesAudioProcessorEditor (CmDelayLines
     setSize (400, 300);
     setResizable(false, false);
 
-    //Initialise dryWet slider
+    //Initialise dryWet Slider
     dryWetSlider.setRange(0.0f, 1.0f);
     dryWetSlider.setValue(0.5f);
-    dryWetSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-    dryWetSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 40, 20);
+    dryWetSlider.setSliderStyle(Slider::SliderStyle::Rotary);
+    dryWetSlider.setTextBoxStyle(Slider::NoTextBox, false, 40, 20);
     dryWetSlider.setColour(0x1001700, Colours::black);
     dryWetSlider.addListener(this);
     addAndMakeVisible(&dryWetSlider);
+    
+    //Initialise dryWet Label
     dryWetLabel.setText("Dry / Wet", dontSendNotification);
-    //dryWetLabel.attachToComponent(&dryWetSlider, true);
-    startTimer(100);
+    dryWetLabel.setJustificationType(Justification::horizontallyCentred);
+    dryWetLabel.setColour(juce::Label::textColourId, Colours::grey);
+    dryWetLabel.attachToComponent(&dryWetSlider, false);
+    
+    
+    // Ignore this - for testing purposes
+    //startTimer(100);
     
 }
 
@@ -43,22 +50,23 @@ CmDelayLinesAudioProcessorEditor::~CmDelayLinesAudioProcessorEditor()
 
 void CmDelayLinesAudioProcessorEditor::paint (Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
+    // Set Background colour and font
     g.fillAll (Colours::black);
     g.setColour (Colours::white);
     g.setFont (20.0f);
-    g.drawText ((std::to_string(processor.dcBpm)), getLocalBounds(), Justification::centred, true);
+    //g.drawText ((std::to_string(processor.dcBpm)), getLocalBounds(), Justification::centred, true);
 }
 
 void CmDelayLinesAudioProcessorEditor::resized()
 {
-    dryWetLabel.setBounds(20, 20, 100, 200);
-    dryWetSlider.setBounds(60, getHeight() - 60, getWidth() - 80, 30);
+    // Set Slider and Label position and size
+    dryWetLabel.setBounds(0, 0, 40, 20);
+    dryWetSlider.setBounds(((getWidth() / 2) -  (getWidth() / 2) / 2), ((getHeight() / 2) -  (getHeight() / 2) / 2), getWidth() / 2, getHeight() / 2);
 }
 
 void CmDelayLinesAudioProcessorEditor::sliderValueChanged (Slider *slider)
 {
-    // Sent slider values to Plugin processor variables
+    // Send slider values to Plugin processor variables
     if (slider == &dryWetSlider)
     {
         processor.dryWetAmount = dryWetSlider.getValue();
