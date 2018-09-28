@@ -63,11 +63,12 @@ public:
     void dcGetBuffer (AudioBuffer<float>& buffer, int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
     void dcGetInverseBuffer (AudioBuffer<float>& buffer, int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
     void dcModulator (AudioBuffer<float>& buffer, int dcModFreq);
+    void dcSetBufferSize ();
     
     double dcBpm;
     bool dcIsLoop;
     bool dcDelayOnOffState = true;
-    float dcDelayTime = 1.0f;
+    float dcDelayTime = 1;
     float dryWetAmount;
     
 
@@ -78,6 +79,7 @@ private:
     int dcBpmFrag = 0;
     int bufferWritePos = 0;
     double dcSampleRate = 44100;
+    int dcSamplesPerBlock;
     double dcCurrentAngle = 0.0;
     double dcAngleDelta = 0.0;
     int x = 0;

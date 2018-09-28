@@ -32,7 +32,7 @@ CmDelayLinesAudioProcessorEditor::CmDelayLinesAudioProcessorEditor (CmDelayLines
     addAndMakeVisible(&dcDelayOnOff);
     
     //Initialise Delay Time Slider
-    delayTimeSlider.setRange(0.0f, 5.0f);
+    delayTimeSlider.setRange(1.0f, 10.0f);
     delayTimeSlider.setValue(1.0f);
     delayTimeSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
     delayTimeSlider.setTextBoxStyle(Slider::NoTextBox, false, 40, 20);
@@ -101,6 +101,7 @@ void CmDelayLinesAudioProcessorEditor::sliderValueChanged (Slider *slider)
     } else if (slider == &delayTimeSlider)
     {
         processor.dcDelayTime = delayTimeSlider.getValue();
+        processor.dcSetBufferSize();
     }
 }
 

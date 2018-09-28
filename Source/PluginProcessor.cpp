@@ -101,10 +101,9 @@ void CmDelayLinesAudioProcessor::changeProgramName (int index, const String& new
 void CmDelayLinesAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Set delay buffer size
-    const int numInputChannels = getTotalNumInputChannels();
-    const int delayBufferSize = 10 * (sampleRate + samplesPerBlock);
     dcSampleRate = sampleRate;
-    dcBuffer.setSize(numInputChannels, delayBufferSize, false, true, true);
+    dcSamplesPerBlock = samplesPerBlock;
+    dcSetBufferSize();
 }
 
 void CmDelayLinesAudioProcessor::releaseResources()
@@ -168,7 +167,8 @@ void CmDelayLinesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         {
             const float* bufferData = buffer.getReadPointer(channel);
             const float* dcBufferData = dcBuffer.getReadPointer(channel);
-       
+            
+            //Use Buffer-related functions for processing
             dcFillBuffer(channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
             //dcGetInverseBuffer(buffer, channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
             dcGetBuffer(buffer, channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
@@ -183,6 +183,14 @@ void CmDelayLinesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 
 //================================ PROCESS BLOCK END ===============================
 
+
+void CmDelayLinesAudioProcessor::dcSetBufferSize ()
+{
+    // Set delay buffer size
+    const int numInputChannels = getTotalNumInputChannels();
+    const int delayBufferSize = dcDelayTime * (dcSampleRate + dcSamplesPerBlock);
+    dcBuffer.setSize(numInputChannels, delayBufferSize, false, true, true);
+}
 
 void CmDelayLinesAudioProcessor::dcFillBuffer (int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData)
 {
@@ -205,7 +213,7 @@ void CmDelayLinesAudioProcessor::dcGetBuffer (AudioBuffer<float>& buffer, int ch
 {
     
     // Read data from delay buffer to main buffer
-    int delayTime = 2000;
+    int delayTime = dcDelayTime * 1000;
     const int bufferReadPos =  static_cast<int> (delayBufferLength + bufferWritePos - (dcSampleRate * delayTime /1000)) % delayBufferLength;
     
     if (delayBufferLength > bufferLength + bufferReadPos)
