@@ -17,7 +17,7 @@
 //==============================================================================
 /**
 */
-class CmDelayLinesAudioProcessorEditor  : public AudioProcessorEditor , public Slider::Listener,  private Timer
+class CmDelayLinesAudioProcessorEditor  : public AudioProcessorEditor , public Slider::Listener,  public Button::Listener, private Timer
 {
 public:
     CmDelayLinesAudioProcessorEditor (CmDelayLinesAudioProcessor&);
@@ -27,8 +27,8 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     void sliderValueChanged (Slider *slider) override;
+    void buttonClicked (Button *buttonThatWasClicked) override;
     
-
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
@@ -38,9 +38,16 @@ private:
     
     // private declarations
     Slider dryWetSlider;
+    Slider delayTimeSlider;
     Label dryWetLabel;
+    Label delayTimeLabel;
+    Label delayLabel;
+    TextButton dcDelayOnOff;
+    LookAndFeel_V4 dcButtonLookAndFeel;
     
    
+
+    
     void timerCallback () override
     {
         //dryWetLabel.setText(std::to_string(processor.dcBpm), dontSendNotification);

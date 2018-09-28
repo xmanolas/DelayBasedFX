@@ -57,15 +57,18 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     //=============================== DC ===========================================
-    float dryWetAmount;
+   
     
     void dcFillBuffer (int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
     void dcGetBuffer (AudioBuffer<float>& buffer, int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
     void dcGetInverseBuffer (AudioBuffer<float>& buffer, int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData);
-    
+    void dcModulator (AudioBuffer<float>& buffer, int dcModFreq);
     
     double dcBpm;
     bool dcIsLoop;
+    bool dcDelayOnOffState = true;
+    float dcDelayTime = 1.0f;
+    float dryWetAmount;
     
 
 private:
@@ -74,7 +77,9 @@ private:
     AudioBuffer<float> dcBuffer;
     int dcBpmFrag = 0;
     int bufferWritePos = 0;
-    int dcSampleRate = 44100;
+    double dcSampleRate = 44100;
+    double dcCurrentAngle = 0.0;
+    double dcAngleDelta = 0.0;
     int x = 0;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CmDelayLinesAudioProcessor)

@@ -22,7 +22,7 @@ CmDelayLinesAudioProcessor::CmDelayLinesAudioProcessor()
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
                        ) ,
-        dryWetAmount(0.5f)
+                    dryWetAmount(0.5f)
 
 #endif
 {
@@ -137,6 +137,7 @@ bool CmDelayLinesAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 }
 #endif
 
+
 //==================================== PROCESS BLOCK ===============================
 
 void CmDelayLinesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
@@ -160,27 +161,28 @@ void CmDelayLinesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     const int bufferLength = buffer.getNumSamples();
     const int dcBufferLength = dcBuffer.getNumSamples();
     
-  
-    
-    
     // Fill and read delay buffer
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    if (dcDelayOnOffState == true)
     {
-        const float* bufferData = buffer.getReadPointer(channel);
-        const float* dcBufferData = dcBuffer.getReadPointer(channel);
+        for (int channel = 0; channel < totalNumInputChannels; ++channel)
+        {
+            const float* bufferData = buffer.getReadPointer(channel);
+            const float* dcBufferData = dcBuffer.getReadPointer(channel);
        
-        dcFillBuffer(channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
-        //dcGetInverseBuffer(buffer, channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
-        dcGetBuffer(buffer, channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
-            
-      
-    }
+            dcFillBuffer(channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
+            //dcGetInverseBuffer(buffer, channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
+            dcGetBuffer(buffer, channel, bufferLength, dcBufferLength, bufferData, dcBufferData);
+        }
     
     // Buffer write position wrap
     bufferWritePos += buffer.getNumSamples();
     bufferWritePos %= dcBuffer.getNumSamples();
+    }
     
 }
+
+//================================ PROCESS BLOCK END ===============================
+
 
 void CmDelayLinesAudioProcessor::dcFillBuffer (int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData)
 {
@@ -217,6 +219,12 @@ void CmDelayLinesAudioProcessor::dcGetBuffer (AudioBuffer<float>& buffer, int ch
         buffer.addFrom(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining);
     }
     
+}
+
+void CmDelayLinesAudioProcessor::dcModulator (AudioBuffer<float>& buffer, int dcModFreq)
+{
+    //auto cyclesPerSample = frequencySlider.getValue() / dcSampleRate;
+    //dcAngleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
 }
 
 void CmDelayLinesAudioProcessor::dcGetInverseBuffer (AudioBuffer<float>& buffer, int channel, const int bufferLength, const int delayBufferLength, const float* bufferData, const float* delayBufferData)
