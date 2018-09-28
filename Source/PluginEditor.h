@@ -45,9 +45,6 @@ private:
     TextButton dcDelayOnOff;
     LookAndFeel_V4 dcButtonLookAndFeel;
     
-   
-
-    
     void timerCallback () override
     {
         //dryWetLabel.setText(std::to_string(processor.dcBpm), dontSendNotification);
