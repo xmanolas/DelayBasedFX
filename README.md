@@ -12,4 +12,3 @@ The main idea behind this plugin is to keep on building on the existing simple d
 
 https://juce.com
 
-
