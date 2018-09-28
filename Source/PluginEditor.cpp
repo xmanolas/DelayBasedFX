@@ -21,7 +21,6 @@ CmDelayLinesAudioProcessorEditor::CmDelayLinesAudioProcessorEditor (CmDelayLines
     setSize (400, 300);
     setResizable(false, false);
 
-    
     //Initialise Delay On/Off Button
     dcDelayOnOff.setButtonText("Delay Off");
     dcDelayOnOff.setColour(juce::TextButton::ColourIds::textColourOffId, Colours::grey);

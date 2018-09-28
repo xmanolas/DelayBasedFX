@@ -147,7 +147,6 @@ void CmDelayLinesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     getPlayHead()->getCurrentPosition(myCurPos);
     dcBpm = myCurPos.timeInSeconds;
     
-
     // Get number of channels
     ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
