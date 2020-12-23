@@ -1,6 +1,6 @@
 # DelayBasedFX
 
-Work In Progress - New edit version for practice
+Work In Progress
 
 This is a working template for a multi delay-based FX plugin based on the ‘The Audio Programmer’ circular buffer tutorials and Daniel Walz’s ‘ffTapeDelay’ code (links below):
 
